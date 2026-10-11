@@ -75,3 +75,8 @@ node_modules/
 # Heavy course lecture PDFs
 Lecture materials/
 
+
+# Demo video folders
+Demo videos/
+*.mp4
+
