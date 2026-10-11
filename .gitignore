@@ -80,3 +80,8 @@ Lecture materials/
 Demo videos/
 *.mp4
 
+
+# Cloned wiki repository
+*.wiki/
+Smart-Attendance-System.wiki/
+
