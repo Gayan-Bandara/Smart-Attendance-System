@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "author": "IIoT-Batch02",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 80, "left": 0, "attrs": {} },
+    { "type": "wokwi-stepper-motor", "id": "mot", "top": 0, "left": 300, "attrs": { "display": "steps" } },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 260, "left": 300, "attrs": { "color": "green" } }
+  ],
+  "connections": [
+    [ "esp:D19", "mot:A+", "red",    [] ],
+    [ "esp:D5",  "mot:A-", "yellow", [] ],
+    [ "esp:D18", "mot:B+", "blue",   [] ],
+    [ "esp:D17", "mot:B-", "green",  [] ],
+    [ "esp:D15", "btn:1.l", "purple", [] ],
+    [ "esp:GND", "btn:2.l", "black",  [] ]
+  ]
+}

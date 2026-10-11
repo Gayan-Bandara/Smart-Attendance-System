@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Antigravity",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-ili9341",
+      "id": "ili",
+      "top": -80,
+      "left": 150,
+      "attrs": { "rotation": "0" }
+    }
+  ],
+  "connections": [
+    [ "esp:3V3", "ili:VCC", "red", [ "v0" ] ],
+    [ "esp:GND", "ili:GND", "black", [ "v0" ] ],
+    [ "esp:15", "ili:CS", "green", [ "v0" ] ],
+    [ "esp:2", "ili:DC", "blue", [ "v0" ] ],
+    [ "esp:4", "ili:RESET", "orange", [ "v0" ] ],
+    [ "esp:23", "ili:MOSI", "yellow", [ "v0" ] ],
+    [ "esp:18", "ili:SCK", "cyan", [ "v0" ] ],
+    [ "esp:3V3", "ili:LED", "red", [ "v0" ] ],
+    [ "esp:19", "ili:MISO", "purple", [ "v0" ] ]
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "author": "Gayan Bandara",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 28.8, "left": -225.56, "attrs": {} },
+    {
+      "type": "wokwi-hx711",
+      "id": "cell1",
+      "top": 306.8,
+      "left": -178.4,
+      "rotate": 90,
+      "attrs": { "type": "5kg" }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -251.6,
+      "left": -128.8,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": 48.87,
+      "left": -593.69,
+      "rotate": 270,
+      "attrs": { "size": "17" }
+    },
+    { "type": "wokwi-a4988", "id": "drv1", "top": 100.8, "left": -312, "attrs": {} },
+    { "type": "wokwi-pushbutton", "id": "btn_tare", "top": 200, "left": -350, "attrs": { "color": "blue" } },
+    { "type": "wokwi-led", "id": "led_green", "top": 280, "left": -350, "attrs": { "color": "green" } },
+    { "type": "wokwi-led", "id": "led_red", "top": 280, "left": -300, "attrs": { "color": "red" } },
+    { "type": "wokwi-resistor", "id": "res_g", "top": 320, "left": -350, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "res_r", "top": 320, "left": -300, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "keypad1:R1", "esp:19", "green", [ "v0" ] ],
+    [ "keypad1:R2", "esp:18", "green", [ "v0" ] ],
+    [ "keypad1:R3", "esp:5", "green", [ "v0" ] ],
+    [ "keypad1:R4", "esp:17", "green", [ "v0" ] ],
+    [ "keypad1:C1", "esp:16", "green", [ "v0" ] ],
+    [ "keypad1:C2", "esp:4", "green", [ "v0" ] ],
+    [ "keypad1:C3", "esp:2", "green", [ "v0" ] ],
+    [ "keypad1:C4", "esp:15", "green", [ "v0" ] ],
+    [ "cell1:DT", "esp:22", "green", [ "v0" ] ],
+    [ "cell1:SCK", "esp:23", "green", [ "v0" ] ],
+    [ "cell1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "esp:5V", "cell1:VCC", "red", [ "h0" ] ],
+    [ "drv1:DIR", "esp:14", "green", [ "h0" ] ],
+    [ "drv1:STEP", "esp:12", "green", [ "h0" ] ],
+    [ "stepper1:B+", "drv1:1B", "green", [ "h0" ] ],
+    [ "stepper1:B-", "drv1:2B", "blue", [ "h0" ] ],
+    [ "drv1:GND.1", "esp:GND.1", "black", [ "v0" ] ],
+    [ "drv1:VDD", "esp:5V", "green", [ "h19.35", "v67.28" ] ],
+    [ "stepper1:A-", "drv1:2A", "violet", [ "h182.4", "v-19.2" ] ],
+    [ "stepper1:A+", "drv1:1A", "yellow", [ "h0" ] ],
+    [ "btn_tare:1.l", "esp:33", "blue", [] ],
+    [ "btn_tare:2.l", "esp:GND.1", "black", [] ],
+    [ "esp:27", "led_green:A", "green", [] ],
+    [ "led_green:C", "res_g:2", "green", [] ],
+    [ "res_g:1", "esp:GND.1", "black", [] ],
+    [ "esp:26", "led_red:A", "red", [] ],
+    [ "led_red:C", "res_r:2", "red", [] ],
+    [ "res_r:1", "esp:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}

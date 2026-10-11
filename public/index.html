@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Student Check-In</title>
+    <!-- Include html5-qrcode library directly -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f9f9f9; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
+        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ccc; }
+        input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; font-size: 18px; background-color: #e74c3c; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #reader { width: 100%; margin-top: 15px; display: none; border-radius: 8px; overflow: hidden; }
+        #status { font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 style="color: #2c3e50; margin-top: 0;">Mark Attendance</h2>
+    
+    <!-- Login Section -->
+    <div id="loginSection">
+        <p>Please sign in to mark your attendance.</p>
+        <button id="loginBtn" style="background-color: #4285F4;">🌐 Sign in with Google</button>
+    </div>
+
+    <!-- Main App Section (Hidden until logged in) -->
+    <div id="appSection" style="display: none;">
+        <div style="margin-bottom: 20px; font-weight: bold; color: #2c3e50;">
+            <span id="userDisplay"></span>
+            <a href="#" id="logoutBtn" style="font-size: 12px; margin-left: 10px; color: #e74c3c;">(Logout)</a>
+        </div>
+
+        <label style="display: block; margin-bottom: 8px; font-weight: bold; text-align: left;">Select your class:</label>
+        <select id="courseSelect">
+            <option value="">Loading courses...</option>
+        </select>
+
+        <button id="scanBtn">📸 SCAN QR TO CHECK IN</button>
+        
+        <div id="reader"></div>
+        <div id="status"></div>
+    </div>
+</div>
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script defer src="/__/firebase/10.4.0/firebase-app-compat.js"></script>
+<!-- Add Firebase Auth -->
+<script defer src="/__/firebase/10.4.0/firebase-auth-compat.js"></script>
+<!-- Initialize Firebase automatically via Firebase Hosting -->
+<script defer src="/__/firebase/init.js"></script>
+
+<script>
+    const TB_SERVER = 'https://eu.thingsboard.cloud';
+    const DEVICE_TOKEN = 'KQYXoDYomNDMJ29qdH0k';
+    let html5QrCode;
+    let currentUserEmail = null;
+    let currentUserName = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup Firebase Auth once scripts load
+        setTimeout(() => {
+            const auth = firebase.auth();
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    currentUserEmail = user.email;
+                    currentUserName = user.displayName || user.email.split('@')[0];
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('appSection').style.display = 'block';
+                    document.getElementById('userDisplay').innerText = "👤 " + currentUserName;
+                } else {
+                    currentUserEmail = null;
+                    currentUserName = null;
+                    document.getElementById('loginSection').style.display = 'block';
+                    document.getElementById('appSection').style.display = 'none';
+                }
+            });
+
+            document.getElementById('loginBtn').onclick = () => {
+                auth.signInWithPopup(provider).catch(error => alert("Login failed: " + error.message));
+            };
+
+            document.getElementById('logoutBtn').onclick = (e) => {
+                e.preventDefault();
+                auth.signOut();
+            };
+        }, 500);
+    });
+
+    const getUrl = 'https://smart-attendance-system-c3110-default-rtdb.firebaseio.com/courses.json';
+
+    // Fetch courses natively from Firebase Database
+    fetch(getUrl)
+        .then(res => {
+            if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
+            return res.json();
+        })
+        .then(data => {
+            const select = document.getElementById('courseSelect');
+            select.innerHTML = '';
+            
+            if (data && data.available_courses) {
+                const courses = data.available_courses.split(',').map(c => c.trim()).filter(c => c);
+                courses.forEach(course => {
+                    const opt = document.createElement('option');
+                    opt.value = course;
+                    opt.innerText = course;
+                    select.appendChild(opt);
+                });
+                if(courses.length === 0) select.innerHTML = '<option value="">No courses found</option>';
+            } else {
+                select.innerHTML = '<option value="">No courses found</option>';
+            }
+        })
+        .catch(err => {
+            document.getElementById('courseSelect').innerHTML = '<option value="">Error: ' + err.message + '</option>';
+        });
+
+    document.getElementById('scanBtn').onclick = function() {
+        const selectedCourse = document.getElementById('courseSelect').value;
+
+        if(!currentUserEmail) {
+            alert('Please sign in first!');
+            return;
+        }
+
+        if(!selectedCourse || selectedCourse === 'No courses found' || selectedCourse.startsWith('Error')) {
+            alert('Please wait for courses to load, or ask an admin to add courses.');
+            return;
+        }
+        
+        document.getElementById('scanBtn').style.display = 'none';
+        document.getElementById('reader').style.display = 'block';
+        document.getElementById('status').innerText = "Starting camera...";
+        document.getElementById('status').style.color = 'blue';
+        
+        try {
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                function onScanSuccess(scannedToken, decodedResult) {
+                    html5QrCode.stop().then(function() {
+                        document.getElementById('reader').style.display = 'none';
+                        document.getElementById('scanBtn').style.display = 'block';
+                        sendAttendance(scannedToken, selectedCourse, currentUserEmail, currentUserName);
+                    });
+                },
+                function onScanFailure(error) { }
+            ).catch(function(err) {
+                document.getElementById('status').innerText = "Camera access denied.";
+                document.getElementById('status').style.color = 'red';
+                document.getElementById('scanBtn').style.display = 'block';
+                document.getElementById('reader').style.display = 'none';
+            });
+        } catch(e) {
+            document.getElementById('status').innerText = "Camera library error.";
+        }
+    };
+
+    function sendAttendance(token, course, email, name) {
+        document.getElementById('status').innerText = "Sending...";
+        document.getElementById('status').style.color = '#f39c12';
+        
+        const telemetry = {
+            qr_token: token,
+            course: course,
+            student_email: email,
+            student_name: name
+        };
+
+        const postUrl = `${TB_SERVER}/api/v1/${DEVICE_TOKEN}/telemetry`;
+
+        // 1. Send telemetry to ThingsBoard (blindly via no-cors)
+        fetch(postUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(telemetry)
+        }).then(response => {
+            document.getElementById('status').innerText = "Verifying with server...";
+            document.getElementById('status').style.color = '#3498db';
+
+            // 2. Poll Firebase to see if ThingsBoard approved it!
+            let attempts = 0;
+            const checkUrl = `https://smart-attendance-system-c3110-default-rtdb.firebaseio.com/confirmations/${token}.json`;
+            
+            const interval = setInterval(() => {
+                attempts++;
+                fetch(checkUrl)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.status === 'success') {
+                            clearInterval(interval);
+                            document.getElementById('status').innerText = "✅ Attendance Confirmed for " + course + "!";
+                            document.getElementById('status').style.color = '#27ae60';
+                        } else if (attempts >= 10) { // 10 attempts * 1s = 10 seconds timeout
+                            clearInterval(interval);
+                            document.getElementById('status').innerText = "❌ QR Code Expired or Invalid!";
+                            document.getElementById('status').style.color = 'red';
+                        }
+                    }).catch(e => {
+                        if(attempts >= 10) {
+                            clearInterval(interval);
+                            document.getElementById('status').innerText = "❌ Network Error during verification.";
+                            document.getElementById('status').style.color = 'red';
+                        }
+                    });
+            }, 1000); // Check every 1 second
+
+        }).catch(error => {
+            document.getElementById('status').innerText = "❌ Network Error sending scan.";
+            document.getElementById('status').style.color = 'red';
+        });
+    }
+</script>
+</body>
+</html>

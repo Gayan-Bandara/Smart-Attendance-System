@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "IIoT-Batch02",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4",    "id": "esp", "top": 120, "left": 0,   "attrs": {} },
+    { "type": "wokwi-dht22",               "id": "dht", "top": 0,   "left": 300, "attrs": {} },
+    { "type": "wokwi-slide-switch",         "id": "vib", "top": 0,   "left": 450, "attrs": {} },
+    { "type": "wokwi-potentiometer",        "id": "pot", "top": 0,   "left": 560, "attrs": {} },
+    { "type": "wokwi-led",                  "id": "led", "top": 300, "left": 330, "attrs": { "color": "green" } },
+    { "type": "wokwi-resistor",             "id": "r1",  "top": 270, "left": 330, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:3V3", "dht:VCC",  "red",    [] ],
+    [ "esp:GND", "dht:GND",  "black",  [] ],
+    [ "esp:D15", "dht:SDA",  "green",  [] ],
+    [ "esp:D34", "vib:2",    "yellow", [] ],
+    [ "esp:3V3", "vib:1",    "red",    [] ],
+    [ "esp:3V3", "pot:VCC",  "red",    [] ],
+    [ "esp:GND", "pot:GND",  "black",  [] ],
+    [ "esp:D35", "pot:SIG",  "orange", [] ],
+    [ "esp:D26", "r1:1",     "green",  [] ],
+    [ "r1:2",    "led:A",    "green",  [] ],
+    [ "esp:GND", "led:C",    "black",  [] ]
+  ]
+}

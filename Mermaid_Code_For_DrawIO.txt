@@ -1,0 +1,67 @@
+=========================================
+1. System Architecture
+=========================================
+flowchart LR
+    subgraph Hardware ["Hardware Terminal (Edge Node)"]
+        direction TB
+        TokenGen["Token Generator"] --> ESP32["ESP32 Microcontroller"]
+        ESP32 --> Display["TFT Display"]
+    end
+    
+    subgraph Smartphone ["Student Smartphone"]
+        direction TB
+        Camera["Camera Scanner"] --> WebApp["Web Application"]
+    end
+    
+    subgraph Cloud ["Cloud Infrastructure"]
+        direction TB
+        TB_Cloud["ThingsBoard Platform\n(Rule Engine & Dashboard)"]
+        FB_Cloud[("Firebase Database\n& Authentication")]
+    end
+    
+    ESP32 -- "1. MQTT (Push active_token)" --> TB_Cloud
+    Display -. "2. Dynamic QR Code" .-> Camera
+    WebApp -- "3. POST Telemetry (no-cors)" --> TB_Cloud
+    TB_Cloud -- "4. Verification Result" --> FB_Cloud
+    FB_Cloud -- "5. Success Polling" --> WebApp
+
+=========================================
+2. Hardware Logic
+=========================================
+flowchart TD
+    Start(["Power ON"]) --> WiFi["Connect to WiFi & MQTT"]
+    WiFi --> GenToken["Generate Random 8-digit Token"]
+    GenToken --> DrawQR["Render Token as QR Code on TFT"]
+    DrawQR --> SyncTB["Publish Token to ThingsBoard\nClient Attributes"]
+    SyncTB --> Wait["Delay 5 Seconds"]
+    Wait --> GenToken
+
+=========================================
+3. Student Check-in Logic
+=========================================
+flowchart TD
+    Start(["Student Opens Web App"]) --> Auth{"Logged in via Google?"}
+    Auth -- "NO" --> Prompt["Prompt Google Sign-in"] --> Auth
+    Auth -- "YES" --> Fetch["Fetch Courses from Firebase"]
+    Fetch --> WaitScan["Wait for QR Scan"]
+    WaitScan --> Scan["Student Scans QR Code"]
+    Scan --> POST["Send telemetry to ThingsBoard\n(qr_token, email, course)"]
+    POST --> Poll["Web App: Poll Firebase for confirmation"]
+    
+    subgraph TB_Logic ["ThingsBoard Rule Engine"]
+        direction TB
+        Recv["Receive Telemetry Message"] --> Match{"Does qr_token match\nESP32 active_token?"}
+        Match -- "YES" --> Save["Save Timeseries (Mark Attendance)"]
+        Save --> API["REST API: Push success to Firebase"]
+        Match -- "NO" --> Drop["Silently Drop Message"]
+    end
+    
+    POST -.-> Recv
+    API -.-> Poll
+    
+    Poll --> Confirm{"Confirmation found\nwithin 10 seconds?"}
+    Confirm -- "YES" --> Success["Display: Success Confirmed"]
+    Confirm -- "NO" --> Fail["Display: QR Code Expired"]
+    
+    Success --> End(["End"])
+    Fail --> End

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP32 QR Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        #qrcode {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #token-text {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="qrcode"></div>
+    <div id="token-text">Starting...</div>
+
+    <script>
+        var qrcode = new QRCode("qrcode", {
+            width: 300,
+            height: 300,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+        });
+
+        function updateQR() {
+            // Generate random 8 digit token
+            var token = Math.floor(10000000 + Math.random() * 90000000).toString();
+            qrcode.clear(); 
+            qrcode.makeCode(token);
+            document.getElementById("token-text").innerText = "Token: " + token;
+
+            // Push the new active token to ThingsBoard device attributes using no-cors trick!
+            fetch('https://eu.thingsboard.cloud/api/v1/KQYXoDYomNDMJ29qdH0k/attributes', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ active_token: token })
+            }).catch(e => console.error("Failed to sync token with ThingsBoard"));
+        }
+
+        updateQR();
+        setInterval(updateQR, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>

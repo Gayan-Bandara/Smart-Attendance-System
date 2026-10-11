@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "author": "IIoT-Batch02",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp",  "top": 120, "left": 0,   "attrs": {} },
+    { "type": "wokwi-dht22",            "id": "dht",  "top": 0,   "left": 300, "attrs": { "pin": "D15" } },
+    { "type": "wokwi-photoresistor-sensor", "id": "ldr", "top": 0, "left": 450, "attrs": {} },
+    { "type": "wokwi-led",              "id": "led1", "top": 280, "left": 300, "attrs": { "color": "yellow" } },
+    { "type": "wokwi-led",              "id": "led2", "top": 280, "left": 400, "attrs": { "color": "blue" } },
+    { "type": "wokwi-pushbutton",       "id": "btn1", "top": 370, "left": 290, "attrs": { "color": "green" } },
+    { "type": "wokwi-pushbutton",       "id": "btn2", "top": 370, "left": 390, "attrs": { "color": "red" } },
+    { "type": "wokwi-resistor",         "id": "r1",   "top": 250, "left": 300, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor",         "id": "r2",   "top": 250, "left": 400, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:3V3", "dht:VCC",  "red",    [] ],
+    [ "esp:GND", "dht:GND",  "black",  [] ],
+    [ "esp:D15", "dht:SDA",  "green",  [] ],
+    [ "esp:3V3", "ldr:VCC",  "red",    [] ],
+    [ "esp:GND", "ldr:GND",  "black",  [] ],
+    [ "esp:D34", "ldr:AO",   "yellow", [] ],
+    [ "esp:D26", "r1:1",     "yellow", [] ],
+    [ "r1:2",    "led1:A",   "yellow", [] ],
+    [ "esp:GND", "led1:C",   "black",  [] ],
+    [ "esp:D27", "r2:1",     "blue",   [] ],
+    [ "r2:2",    "led2:A",   "blue",   [] ],
+    [ "esp:GND", "led2:C",   "black",  [] ],
+    [ "esp:D32", "btn1:1.l", "green",  [] ],
+    [ "esp:GND", "btn1:2.l", "black",  [] ],
+    [ "esp:D33", "btn2:1.l", "green",  [] ],
+    [ "esp:GND", "btn2:2.l", "black",  [] ]
+  ]
+}

@@ -1,0 +1,413 @@
+--- Page 1 ---
+Week 01 
+
+
+--- Page 2 ---
+ 
+ 
+Slide deck: 
+ 
+Day 1 - Presentation0.1.pptx
+ 
+Discussed Points: 
+●​ IoT evolved from industrial foundations to include microcontrollers, 
+smart devices, and global connectivity. 
+●​ Core IIoT architecture integrates sensors, actuators, cloud servers, 
+and data processing systems. 
+●​ Industrial solutions must mitigate challenges like vibration, dust, 
+temperature swings, and electromagnetic interference. 
+●​ Practical sessions focus on building plant moisture monitoring system 
+using Wokwi, Arduino, and sensors. 
+Platform to use improve the understand of the Microcontrollers, 
+1.​ https://wokwi.com/ <- Best for IoT project simulation. 
+ISSUED BY 
+YOUR COMPANY NAME 
+ 
+REPRESENTATIVE 
+YOUR NAME 
+YOUR EMAIL  
+YOUR PHONE 
+ 
+ 
+ 
+ 
+
+
+--- Page 3 ---
+ 
+2.​ tinkercad.com <- best for overall electronics, 3D design and 
+simulation. 
+​
+What is a microcontroller: 
+​
+What is an MCU? - Micro Controller Units Explained
+Other microcontrollers: 
+​
+Every Dev Board Explained in 6 Minutes
+ 
+Arduino 101- Crash Course w/ Mark Rober
+ 
+Exercise 01: 
+Get familiar with microcontroller & cording try these examples in wokwi or 
+thinkercad, 
+1.​ Arduino Blink LED 
+2.​ Arduino Buzzer 
+3.​ Arduino Servo Motor 
+4.​ Arduino Ultrasonic 
+A great way to combine all four of these components is to build a Smart 
+Proximity Alarm System (car reverse alert system). 
+Here is how it will work: The ultrasonic sensor acts as the "eyes," constantly 
+scanning for obstacles. If an obstacle gets too close (within 10 cm), the system 
+triggers an alert: the LED blinks rapidly, the buzzer sounds an alarm. 
+ 
+1 
+
+
+--- Page 4 ---
+ 
+Week 02 
+ 
+
+
+--- Page 5 ---
+ 
+ 
+Slide deck: 
+ 
+Day 02 - V2
+ 
+Discussed Points: 
+●​ Sensors 
+○​ What are the sensors? 
+○​ Characteristics of sensors. 
+○​ How to check if the sensor is suitable or not. 
+○​ AI code/firmware  generations. 
+○​ Add new sensors to the system. 
+●​ Edge node 
+○​ What is the edge node? 
+○​ Edge node architecture concepts. 
+●​ High-Tech Plant Nursery System - Covered in class. Go through 
+the slides and try to do it by yourself. 
+ 
+Sensors: 
+ 
+Sensors - which one to use
+Type of sensors: 
+ 
+What is a Sensor? Different Types of Sensors, Applications
+ 
+ 
+
+
+--- Page 6 ---
+ 
+Exercise 02: 
+1.​ The Human-Machine Interface: 
+Goal: Build a menu system where the user can type in a "Target 
+Weight" (e.g., 250g) using the keypad. Pressing '*' clears the screen, 
+and '#' saves the target weight to a variable.  
+2.​ The Precision Scale: 
+Goal: Read the raw data from the HX711, apply a known 
+calibration factor to convert it to grams, and print it to the Serial 
+Monitor. Include a button to "Tare" (zero out) the scale.  
+3.​ The Actuator: (create this for servo and stepper both motors). 
+Goal: Write a program using the AccelStepper library. When a 
+button is pressed, the motor smoothly accelerates, rotates exactly 
+90 degrees clockwise (simulating moving an item to the "Accept" 
+bin), and then returns to the center position.  
+ 
+The Combined Project: The Master Sorter 
+ 
+
+
+--- Page 7 ---
+ 
+ 
+When they put it all together, they build a fully functional quality-control 
+station. 
+The operator types the desired target weight (e.g., 500g) on the Keypad. A 
+package (simulated) is placed on the Load Cell. The ESP32 reads the weight: 
+1.​ If the weight is within a 5% tolerance of the target, the Green LED 
+flashes, and the servo motor kicks the package to the left bin. 
+2.​ If the weight is wrong, the Red LED flashes, and the Stepper Motor 
+kicks it to the right bin (Reject). 
+ 
+Note: We have all these components available at the American Corner 
+Matara! Feel free to come to class a bit early if you want to get your hands 
+on the physical hardware and test it out.  
+ 
+
+
+--- Page 8 ---
+ 
+Week 03 
+ 
+
+
+--- Page 9 ---
+ 
+ 
+ 
+Slide deck: 
+ 
+Day-3-v2.pptx
+ 
+Discussed Points: 
+●​ Communication Methods 
+○​ Plane Lorry Hand Carry -> WiFi , Bluetooth, Serial .. 
+●​ Communication Technologies. 
+○​ Wired 
+■​ Serial RS-485. 
+■​ Ethernet (CAT 6). 
+■​ Fiber Optics. 
+■​ I2C, SPI. 
+○​ Wireless 
+■​ WiFi. 
+■​ Bluetooth. 
+■​ LoRa. 
+■​ Cellular. 
+■​ RFID. 
+○​ Wired Communication vs Wireless Communication. 
+●​ Protocols 
+○​ MQTT 
+■​ Publish. 
+ 
+
+
+--- Page 10 ---
+ 
+■​ Subscribe. 
+○​ Hivemind free MQTT broker. (console.hivemq.cloud). 
+●​ Communication Terms in IoT 
+○​ JSON. 
+○​ Payload. 
+○​ Telemetry. 
+●​ Business Layer 
+○​ What is “Business Logic”. 
+○​ Flow of Data. 
+■​ Flow charts. 
+●​ IoT Platform, 
+○​ Why we need an IoT Platform. 
+○​ Existing IoT Platform. 
+○​ Thingsboard Architecture. 
+○​ IIoT Architecture vs Thingsboard Architecture. 
+○​ Class room activity: Connect ESP32 with Utrazonic 
+Sensor to publish the distance to the Thingsboard 
+platform. 
+ 
+MQTT: 
+ 
+What is MQTT and How It Works
+UART, I2C, SPI RS-485: 
+ 
+Every Hardware Protocol Explained in 6 Minutes
+ 
+Thingsboard : https://eu.thingsboard.cloud/  
+ 
+Exercise 03: Smart Room 
+Step 1: Wokwi Hardware Setup 
+●​ Sensors & Components: 1x DHT22, 1x Photoresistor (LDR), 2x LEDs (e.g., Red and Blue), 2x Push Buttons (Switches), 2x Resistors (330Ω). 
+ 
+
+
+--- Page 11 ---
+ 
+●​ Microcontroller: ESP32. 
+●​ Goal: Manually wire the ESP32 to read environmental data and allow the 2 switches to control the 2 LEDs locally. 
+Wiring Instructions: 
+1.​ DHT22 (Temperature & Humidity): 
+○​ Connect VCC to ESP32 3V3. 
+○​ Connect GND to ESP32 GND. 
+○​ Connect SDA to ESP32 GPIO. 
+2.​ Photoresistor (LDR): 
+○​ Connect VCC to ESP32 3V3. 
+○​ Connect GND to ESP32 GND. 
+○​ Connect AO to ESP32 GPIO. 
+3.​ LED 1 (Main Room Light) & Switch 1: 
+○​ Connect LED 1 Anode (+) to ESP32 GPIO. Connect Cathode (-) to a resistor (220 Ohm), then to GND. 
+○​ Connect one side of Switch 1 to ESP32 GPIO. Connect the other side to GND. (We will use internal pull-up resistors in the code). 
+4.​ LED 2 (AC/Fan Indicator) & Switch 2: 
+○​ Connect LED 2 Anode (+) to ESP32 GPIO. Connect Cathode (-) to a resistor (220 Ohm), then to GND. 
+○​ Connect one side of Switch 2 to ESP32 GPIO. Connect the other side to GND.Step 2:  
+Code Generation: 
+Prompt formats that proven works,​
+Option 1. PTCF framework (Persona, Task, Context, Format).​
+Option 2. BRIEF (Background, Role, Instructions, Expectations, Format). 
+Here we will use the 2nd option. 
+Background: ​
+I am conducting an IoT class where students are building a "Smart Room" edge node simulated in Wokwi, connecting to the 
+ThingsBoard cloud platform. The hardware consists of an ESP32 microcontroller, a DHT22 sensor (temperature/humidity), a 
+photoresistor (LDR), 2 LEDs (representing a room light and an AC unit), and 2 physical push-button switches. The device acts 
+as a dual-purpose node: it handles local manual control via the switches and communicates bidirectionally with ThingsBoard 
+to send telemetry and receive remote commands. 
+Role:​
+Act as an Expert Embedded Systems Engineer and IoT Educator. Your code should follow the "Keep It Simple, Stupid" (KISS) 
+principle—making the edge node act as a lightweight data bridge while remaining highly readable for students learning C++ 
+and IoT concepts. 
+Instructions: ​
+ 
+
+
+--- Page 12 ---
+ 
+Write the complete Arduino/C++ .ino sketch for this ESP32 project. 
+1.​ Libraries: Use the PubSubClient library for all MQTT communication and the standard Adafruit Libraries. 
+2.​ Hardware Pins: 
+○​ DHT22 on <pin number>. 
+○​ LDR on <pin number>. 
+○​ LED 1 (Light) on <pin number>. 
+○​ LED 2 (AC) on <pin number>. 
+○​ Switch 1 on <pin number> (use INPUT_PULLUP). 
+○​ Switch 2 on <pin number> (use INPUT_PULLUP). 
+3.​ Local Logic: Implement physical switch polling. Pressing a switch should toggle its respective LED. Include basic 
+software debounce logic. 
+4.​ Telemetry: Read the sensors and current LED states. Construct a JSON string containing temperature, humidity, 
+light_level, light_status, and ac_status. Publish this to the ThingsBoard topic v1/devices/me/telemetry every 5 seconds. 
+5.​ Remote Control (RPC): Subscribe to the ThingsBoard RPC topic v1/devices/me/rpc/request/+. Implement the callback 
+function to parse incoming commands for setLightState and setACState, toggling the physical LEDs based on the cloud 
+payload. 
+Expectations: 
+●​ Do not use delay() for the 5-second telemetry loop; use non-blocking millis() timing so the physical switches remain 
+instantly responsive. 
+●​ Include robust reconnect() logic for both WiFi and the MQTT broker. 
+●​ Use simple String concatenation or snprintf for the JSON payload—avoid complex JSON libraries to keep the code 
+footprint small and educational. 
+●​ Add clear, instructional comments explaining the purpose of the WiFi setup, MQTT reconnect loop, and the RPC 
+callback function. 
+Format:​
+Provide the complete, ready-to-compile C++ code in a single markdown code block. Below the code, provide a brief 
+markdown table summarizing the GPIO pin mapping for the students to use as a wiring reference. 
+ 
+Action Items: 
+1.​ In Wokwi, go to the Library Manager and add the correct libraries. 
+2.​ Paste the following code into sketch.ino. 
+3.​ Insert your ThingsBoard Access Token. 
+ 
+Step 2: ThingsBoard Platform Setup 
+ 
+
+
+--- Page 13 ---
+ 
+●​ Goal: Create the digital twin for your Smart Room to receive telemetry and send remote control commands. 
+Instructions: 
+1.​ Log in to your ThingsBoard instance (https://eu.thingsboard.cloud/). 
+2.​ Navigate to Entities -> Devices and click the "+" icon to add a new device. 
+3.​ Name it Smart_Room_Node and click Add. 
+4.​ Click on your newly created device, click Manage Credentials, and copy the Access Token. 
+Step 3: Create a Dashboard 
+1.​ Go to Dashboards on the left menu. 
+2.​ Click the "+" icon and select Create new dashboard. 
+3.​ Name it "Smart Room" and open it. 
+4.​ Click the Add Widget. 
+5.​ Click Add new widget and select Digital Gauges (or Analog Gauges). 
+6.​ Click on a gauge style. 
+7.​ In the setup window, set Target Device directly to your Smart_Room_Node. 
+8.​ In the Data keys box, select temperature and click Add. 
+9.​ Repeat this process for humidity. 
+10.​Optional: Do this once more, but choose Charts -> Timeseries Line Chart and select light_level to see a graph of the room's brightness. 
+Likewise add LED to show the on off status of the light bulb. And also add a widget and display if it’s day or night based on LDR readings. 
+ 
+ 
+
+
+--- Page 14 ---
+ 
+Week 04 
+ 
+
+
+--- Page 15 ---
+ 
+ 
+Slide deck:
+ 
+Day 4 - v2 (1).pptx
+ 
+Discussed Points: 
+●​ IIoT Solution 
+○​ Operational & Performance Metrics. 
+■​ Downtime? 
+■​ Overall Equipment Effectiveness (OEE)? 
+■​ Condition Monitoring? 
+■​ Throughput? 
+■​ Predictive Maintenance (PdM)? 
+●​ Industrial Laundry Service - IIoT Solution 
+○​ What Edge Node Architecture Concepts? 
+○​ Project Goal. 
+○​ Architecture Diagram. 
+○​ What's needed to monitor and what sensors we can use?! 
+○​ Goal + User Flow -> Business Logic. 
+○​ Wokwi Simulation. 
+○​ IoT Platform connection. 
+■​ Device creation. 
+■​ Attribute vs Time series. 
+■​ Attribute 
+ 
+
+
+--- Page 16 ---
+ 
+●​ Client 
+●​ Server 
+●​ Shared 
+ 
+Exercise 04: Industrial Laundry Service 
+Continuous from the class activity, 
+ 
+●​ Identify what part of this is in the edge node, what part needs to do in the 
+IoT Platform side. (hint check the edge node concepts). 
+●​ Use the Power button widget in the dashboard to control the LED. 
+ 
+
+
+--- Page 17 ---
+ 
+●​ Use the HTML Value Card widget in the dashboard to show the data and 
+use AI with HTML to modify it. 
+●​ Add Image to the Dashboard background. 
+●​ Add a  Time series table to show the incoming telemetry data and try to 
+change the time to see whether you can get the old values. 
+ 
+●​ Check what modification offers under the Advance option in each 
+widgets, (Top Right). 
+ 
+ 
+Once you complete this try to create a modern dashboard for Exercise 03 
+- Smart Room. 
+ 
+ 
+ 
+
+
+--- Page 18 ---
+ 
+Week 05 
+ 
+
+
+--- Page 19 ---
+ 
+ 
+Slide deck:
+ 
+Day 5
+ 
+Discussed Points: 
+●​ Thingsboard and Rule chains. 
+○​ Available rulechain nodes. 
+○​ How to implement a simple rule chain. 
+●​ Product developments. 
+ 
+Class Activity Rule Chain, 
+ 
+
+
+--- Page 20 ---
+ 
+ 
+ 
+ 
+ 
+
+
